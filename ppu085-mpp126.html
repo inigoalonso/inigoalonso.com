@@ -1,0 +1,135 @@
+<html>
+<head>
+    <title>PPU085/MPP126 project priorities</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.2/xlsx.full.min.js" integrity="sha512-DaMQrMxgirR5T0Zu+d7EABoP1uD7e2Sv6OBjifMM8RADf1orW42COfJgwZ8xsLRV6NhgR/erzCfodeqJmA3NtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js" integrity="sha512-Qlv6VSKh1gDKGoJbnyA5RMXYcvnpIqhO++MhIM2fStMcGT9i2T//tSwYFlcyoRRDcDZ+TYHpH8azBBCyhpSeqw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css" integrity="sha512-xiunq9hpKsIcz42zt0o2vCo34xV0j6Ny8hgEylN3XBglZDtTZ2nwnqF/Z/TTCc18sGdvCjbFInNd++6q3J0N6g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+<!-- Header -->
+<header class="container">
+    <hgroup>
+        <h1>PPU085/MPP126</h1>
+    </hgroup>
+</header><!-- ./ Header -->
+
+<!-- Main -->
+<main class="container">
+
+    <form>
+    <fieldset>
+        <h2>Personal information</h2>
+        <p>This website does not store your personal information, all processing happens in your browser.</p>
+        <div class="row">
+            <div class="column">
+                <label for="firstname">First name</label>
+                <input type="text" id="firstname" name="firstname" placeholder="First name" aria-label="First name" required>
+            </div>
+            <div class="column">
+                <label for="lastname">Last name</label>
+                <input type="text" id="lastname" name="lastname" placeholder="Last name" aria-label="Last name" required>
+            </div>
+            <div class="column">
+                <label for="personnummer">Personnummer</label>
+                <input type="text" id="personnummer" name="personnummer" placeholder="YYMMDD-XXXX" aria-label="Personnummer" required>
+            </div>
+        </div>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="yourname@student.chalmers.se" aria-label="Email address" required>
+
+        <label for="background">Background</label>
+        <textarea id="background" name="background" placeholder="Maximum 100 words"></textarea>
+
+
+        <h2>Project preferences</h2>
+        <p>Rank your 5 most preferred projects.</p>
+        <!-- Select 1 -->
+        <label for="project_1">Project 1 (most preferred)</label>
+        <select id="project_1" required>
+            <option value="" selected>Select a project…</option>
+            <option value="a">Project a</option>
+            <option value="b">Project b</option>
+        </select>
+        <!-- Select 2 -->
+        <label for="project_2">Project 2</label>
+        <select id="project_2" required>
+            <option value="" selected>Select a project…</option>
+            <option value="a">Project a</option>
+            <option value="b">Project b</option>
+        </select>
+        <!-- Select 3 -->
+        <label for="project_3">Project 3</label>
+        <select id="project_3" required>
+            <option value="" selected>Select a project…</option>
+            <option value="a">Project a</option>
+            <option value="b">Project b</option>
+        </select>
+        <!-- Select 4 -->
+        <label for="project_4">Project 4</label>
+        <select id="project_4" required>
+            <option value="" selected>Select a project…</option>
+            <option value="a">Project a</option>
+            <option value="b">Project b</option>
+        </select>
+        <!-- Select 5 -->
+        <label for="project_5">Project 5</label>
+        <select id="project_5" required>
+            <option value="" selected>Select a project…</option>
+            <option value="a">Project a</option>
+            <option value="b">Project b</option>
+        </select>
+        <input id="button-a" style="width: 100%;" class="button-primary" type="button" value="Download file">
+        
+    </fieldset>
+    </form>
+
+<h3>Email the downloaded file to <a href="mailto:inigo.alonso@chalmers.se">inigo.alonso@chalmers.se</a> from your Chalmers email.</h3>
+
+</main><!-- ./ Main -->
+
+<script>
+
+        function s2ab(s) {
+
+                var buf = new ArrayBuffer(s.length);
+                var view = new Uint8Array(buf);
+                for (var i=0; i<s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+                return buf;
+                
+        }
+        $("#button-a").click(function(event){
+                var wb = XLSX.utils.book_new();
+                wb.Props = {
+                        Title: "PPU085/MPP126 2021/2022",
+                        Subject: "Selection of project preferences",
+                        Author: "Student",
+                        CreatedDate: new Date(2021,10,20)
+                };
+                
+                wb.SheetNames.push("Student");
+                var firstname = document.getElementById('firstname').value;
+                var lastname = document.getElementById('lastname').value;
+                var personnummer = document.getElementById('personnummer').value;
+                var email = document.getElementById('email').value;
+                var background = document.getElementById('background').value;
+                var project1 = document.getElementById('project_1').value;
+                var project2 = document.getElementById('project_2').value;
+                var project3 = document.getElementById('project_3').value;
+                var project4 = document.getElementById('project_4').value;
+                var project5 = document.getElementById('project_5').value;
+                var ws_data = [['firstname' , 'lastname', 'personnummer', 'email', 'background', 'project1', 'project2', 'project3', 'project4', 'project5'],
+                            [firstname , lastname, personnummer, email, background, project1, project2, project3, project4, project5]];
+                var ws = XLSX.utils.aoa_to_sheet(ws_data);
+                wb.Sheets["Student"] = ws;
+
+                var wbout = XLSX.write(wb, {bookType:'xlsx',  type: 'binary'});
+                saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), 'test.xlsx');
+                event.returnValue = false;
+        });
+
+</script>
+</body>
+</html>
