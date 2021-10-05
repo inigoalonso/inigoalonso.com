@@ -1,199 +1,227 @@
-<html>
+<html lang="en">
+
 <head>
     <title>PPU085/MPP126 project selection and priorities</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.2/xlsx.full.min.js" integrity="sha512-DaMQrMxgirR5T0Zu+d7EABoP1uD7e2Sv6OBjifMM8RADf1orW42COfJgwZ8xsLRV6NhgR/erzCfodeqJmA3NtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js" integrity="sha512-Qlv6VSKh1gDKGoJbnyA5RMXYcvnpIqhO++MhIM2fStMcGT9i2T//tSwYFlcyoRRDcDZ+TYHpH8azBBCyhpSeqw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css" integrity="sha512-xiunq9hpKsIcz42zt0o2vCo34xV0j6Ny8hgEylN3XBglZDtTZ2nwnqF/Z/TTCc18sGdvCjbFInNd++6q3J0N6g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.2/xlsx.full.min.js"
+        integrity="sha512-DaMQrMxgirR5T0Zu+d7EABoP1uD7e2Sv6OBjifMM8RADf1orW42COfJgwZ8xsLRV6NhgR/erzCfodeqJmA3NtA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"
+        integrity="sha512-Qlv6VSKh1gDKGoJbnyA5RMXYcvnpIqhO++MhIM2fStMcGT9i2T//tSwYFlcyoRRDcDZ+TYHpH8azBBCyhpSeqw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css"
+        integrity="sha512-xiunq9hpKsIcz42zt0o2vCo34xV0j6Ny8hgEylN3XBglZDtTZ2nwnqF/Z/TTCc18sGdvCjbFInNd++6q3J0N6g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <meta name="robots" content="noindex">
 </head>
+
 <body>
 
-<!-- Header -->
-<header class="container">
-    <div class="row">
-        <div class="column">
-            <hgroup>
-                <h1>Project selection</h1>
-            </hgroup>
-        </div>
-        <div class="column">
-            <hgroup>
-                <h1 id="counter" style="text-align: center;"></h1>
-            </hgroup>
-        </div>
-    </div>
-    <div class="row">
-        <div class="column">
-            <p>For the Product Planning – Needs and Opportunities (PPU085) and Product Development Project (MPP126) courses. Based on the proposals presented on October 13th, and the short descriptions you have been provided with, you need to select 5 of the projects and rank them in order of your preference. The deadline for submitting the information to Iñigo Alonso Fernandez is on Tuesday October 19th, at 17:00.</p>
-        </div>
-    </div>
-</header><!-- ./ Header -->
-
-<!-- Main -->
-<main class="container">
-
-    <form>
-    <fieldset>
-        <h2>Personal information</h2>
-        <p>This website does not store your personal information, all processing happens in your browser.</p>
+    <!-- Header -->
+    <header class="container">
         <div class="row">
             <div class="column">
-                <label for="firstname">First name</label>
-                <input type="text" id="firstname" name="firstname" placeholder="First name" aria-label="First name" required>
+                <hgroup>
+                    <h1>Project selection</h1>
+                </hgroup>
             </div>
             <div class="column">
-                <label for="lastname">Last name</label>
-                <input type="text" id="lastname" name="lastname" placeholder="Last name" aria-label="Last name" required>
-            </div>
-            <div class="column">
-                <label for="personnummer">Personnummer</label>
-                <input type="text" id="personnummer" name="personnummer" placeholder="YYMMDD-XXXX" aria-label="Personnummer" required>
+                <hgroup>
+                    <h1 id="counter" style="text-align: center;"></h1>
+                </hgroup>
             </div>
         </div>
+        <div class="row">
+            <div class="column">
+                <p>For the Product Planning – Needs and Opportunities (PPU085) and Product Development Project (MPP126)
+                    courses. Based on the proposals presented on October 13th, and the short descriptions you have been
+                    provided with, you need to select 5 of the projects and rank them in order of your preference. The
+                    deadline for submitting the information to Iñigo Alonso Fernandez is on Tuesday October 19th, at
+                    17:00.</p>
+            </div>
+        </div>
+    </header><!-- ./ Header -->
 
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" placeholder="cid@student.chalmers.se" aria-label="Email address" required>
+    <!-- Main -->
+    <main class="container">
 
-        <label for="background">Background</label>
-        <textarea id="background" name="background" placeholder="Maximum 100 words"></textarea>
+        <form>
+            <fieldset>
+                <h2>Personal information</h2>
+                <p>This website does not store your personal information, all processing happens in your browser.</p>
+                <div class="row">
+                    <div class="column">
+                        <label for="firstname">First name</label>
+                        <input type="text" id="firstname" name="firstname" placeholder="First name"
+                            aria-label="First name" required>
+                    </div>
+                    <div class="column">
+                        <label for="lastname">Last name</label>
+                        <input type="text" id="lastname" name="lastname" placeholder="Last name" aria-label="Last name"
+                            required>
+                    </div>
+                    <div class="column">
+                        <label for="personnummer">Personnummer</label>
+                        <input type="text" id="personnummer" name="personnummer" placeholder="YYMMDD-XXXX"
+                            aria-label="Personnummer" required>
+                    </div>
+                </div>
+
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="cid@student.chalmers.se"
+                    aria-label="Email address" required>
+
+                <label for="background">Background</label>
+                <textarea id="background" name="background" placeholder="Maximum 100 words"></textarea>
 
 
-        <h2>Project preferences</h2>
-        <p>Rank your 5 most preferred projects.</p>
-        <!-- Select 1 -->
-        <label for="project_1">Project 1 (most preferred)</label>
-        <select id="project_1" required>
-            <option value="" selected>Select a project…</option>
-            <option value="a">Project a</option>
-            <option value="b">Project b</option>
-            <option value="c">Project c</option>
-            <option value="d">Project d</option>
-            <option value="e">Project e</option>
-            <option value="f">Project f</option>
-        </select>
-        <!-- Select 2 -->
-        <label for="project_2">Project 2</label>
-        <select id="project_2" required>
-            <option value="" selected>Select a project…</option>
-            <option value="a">Project a</option>
-            <option value="b">Project b</option>
-            <option value="c">Project c</option>
-            <option value="d">Project d</option>
-            <option value="e">Project e</option>
-            <option value="f">Project f</option>
-        </select>
-        <!-- Select 3 -->
-        <label for="project_3">Project 3</label>
-        <select id="project_3" required>
-            <option value="" selected>Select a project…</option>
-            <option value="a">Project a</option>
-            <option value="b">Project b</option>
-            <option value="c">Project c</option>
-            <option value="d">Project d</option>
-            <option value="e">Project e</option>
-            <option value="f">Project f</option>
-        </select>
-        <!-- Select 4 -->
-        <label for="project_4">Project 4</label>
-        <select id="project_4" required>
-            <option value="" selected>Select a project…</option>
-            <option value="a">Project a</option>
-            <option value="b">Project b</option>
-            <option value="c">Project c</option>
-            <option value="d">Project d</option>
-            <option value="e">Project e</option>
-            <option value="f">Project f</option>
-        </select>
-        <!-- Select 5 -->
-        <label for="project_5">Project 5</label>
-        <select id="project_5" required>
-            <option value="" selected>Select a project…</option>
-            <option value="a">Project a</option>
-            <option value="b">Project b</option>
-            <option value="c">Project c</option>
-            <option value="d">Project d</option>
-            <option value="e">Project e</option>
-            <option value="f">Project f</option>
-        </select>
-        <input id="button-a" style="width: 100%;" class="button-primary" type="button" value="Download file">
-        
-    </fieldset>
-    </form>
+                <h2>Project preferences</h2>
+                <p>Rank your 5 most preferred projects.</p>
+                <!-- Select 1 -->
+                <label for="project_1">Project 1 (most preferred)</label>
+                <select id="project_1" required>
+                    <option value="" selected>Select a project…</option>
+                    <option value="a">Project a</option>
+                    <option value="b">Project b</option>
+                    <option value="c">Project c</option>
+                    <option value="d">Project d</option>
+                    <option value="e">Project e</option>
+                    <option value="f">Project f</option>
+                </select>
+                <!-- Select 2 -->
+                <label for="project_2">Project 2</label>
+                <select id="project_2" required>
+                    <option value="" selected>Select a project…</option>
+                    <option value="a">Project a</option>
+                    <option value="b">Project b</option>
+                    <option value="c">Project c</option>
+                    <option value="d">Project d</option>
+                    <option value="e">Project e</option>
+                    <option value="f">Project f</option>
+                </select>
+                <!-- Select 3 -->
+                <label for="project_3">Project 3</label>
+                <select id="project_3" required>
+                    <option value="" selected>Select a project…</option>
+                    <option value="a">Project a</option>
+                    <option value="b">Project b</option>
+                    <option value="c">Project c</option>
+                    <option value="d">Project d</option>
+                    <option value="e">Project e</option>
+                    <option value="f">Project f</option>
+                </select>
+                <!-- Select 4 -->
+                <label for="project_4">Project 4</label>
+                <select id="project_4" required>
+                    <option value="" selected>Select a project…</option>
+                    <option value="a">Project a</option>
+                    <option value="b">Project b</option>
+                    <option value="c">Project c</option>
+                    <option value="d">Project d</option>
+                    <option value="e">Project e</option>
+                    <option value="f">Project f</option>
+                </select>
+                <!-- Select 5 -->
+                <label for="project_5">Project 5</label>
+                <select id="project_5" required>
+                    <option value="" selected>Select a project…</option>
+                    <option value="a">Project a</option>
+                    <option value="b">Project b</option>
+                    <option value="c">Project c</option>
+                    <option value="d">Project d</option>
+                    <option value="e">Project e</option>
+                    <option value="f">Project f</option>
+                </select>
+                <input id="button-a" style="width: 100%;" class="button-primary" type="button" value="Download file">
 
-<h3>Email the downloaded file to <a href="mailto:inigo.alonso@chalmers.se">inigo.alonso@chalmers.se</a> from your Chalmers email.</h3>
+            </fieldset>
+        </form>
 
-</main><!-- ./ Main -->
+        <h3>Email the downloaded file to <a href="mailto:inigo.alonso@chalmers.se">inigo.alonso@chalmers.se</a> from
+            your Chalmers email.</h3>
 
-<script>
+    </main><!-- ./ Main -->
 
-function s2ab(s) {
+    <script>
+        function s2ab(s) {
 
-        var buf = new ArrayBuffer(s.length);
-        var view = new Uint8Array(buf);
-        for (var i=0; i<s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
-        return buf;
-        
-}
-$("#button-a").click(function(event){
-        var wb = XLSX.utils.book_new();
-        wb.Props = {
+            var buf = new ArrayBuffer(s.length);
+            var view = new Uint8Array(buf);
+            for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+            return buf;
+
+        }
+        $("#button-a").click(function (event) {
+            var wb = XLSX.utils.book_new();
+            wb.Props = {
                 Title: "PPU085/MPP126 2021/2022",
                 Subject: "Selection of project preferences",
                 Author: "Student",
-                CreatedDate: new Date(2021,10,20)
-        };
-        
-        wb.SheetNames.push("Student");
-        var firstname = document.getElementById('firstname').value;
-        var lastname = document.getElementById('lastname').value;
-        var personnummer = document.getElementById('personnummer').value;
-        var email = document.getElementById('email').value;
-        var background = document.getElementById('background').value;
-        var project1 = document.getElementById('project_1').value;
-        var project2 = document.getElementById('project_2').value;
-        var project3 = document.getElementById('project_3').value;
-        var project4 = document.getElementById('project_4').value;
-        var project5 = document.getElementById('project_5').value;
-        var ws_data = [['firstname' , 'lastname', 'personnummer', 'email', 'background', 'project1', 'project2', 'project3', 'project4', 'project5'],
-                    [firstname , lastname, personnummer, email, background, project1, project2, project3, project4, project5]];
-        var ws = XLSX.utils.aoa_to_sheet(ws_data);
-        wb.Sheets["Student"] = ws;
+                CreatedDate: new Date(2021, 10, 20)
+            };
 
-        var wbout = XLSX.write(wb, {bookType:'xlsx',  type: 'binary'});
-        saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), 'test.xlsx');
-        event.returnValue = false;
-});
+            wb.SheetNames.push("Student");
+            var firstname = document.getElementById('firstname').value;
+            var lastname = document.getElementById('lastname').value;
+            var personnummer = document.getElementById('personnummer').value;
+            var email = document.getElementById('email').value;
+            var background = document.getElementById('background').value;
+            var project1 = document.getElementById('project_1').value;
+            var project2 = document.getElementById('project_2').value;
+            var project3 = document.getElementById('project_3').value;
+            var project4 = document.getElementById('project_4').value;
+            var project5 = document.getElementById('project_5').value;
+            var ws_data = [
+                ['firstname', 'lastname', 'personnummer', 'email', 'background', 'project1', 'project2',
+                    'project3', 'project4', 'project5'
+                ],
+                [firstname, lastname, personnummer, email, background, project1, project2, project3,
+                    project4, project5
+                ]
+            ];
+            var ws = XLSX.utils.aoa_to_sheet(ws_data);
+            wb.Sheets["Student"] = ws;
 
-// Set the date we're counting down to
-var countDownDate = new Date("Oct 19, 2021 17:0:0").getTime();
+            var wbout = XLSX.write(wb, {
+                bookType: 'xlsx',
+                type: 'binary'
+            });
+            saveAs(new Blob([s2ab(wbout)], {
+                type: "application/octet-stream"
+            }), 'test.xlsx');
+            event.returnValue = false;
+        });
 
-// Update the count down every 1 second
-var x = setInterval(function() {
+        // Set the date we're counting down to
+        var countDownDate = new Date("Oct 19, 2021 17:0:0").getTime();
 
-  // Get today's date and time
-  var now = new Date().getTime();
+        // Update the count down every 1 second
+        var x = setInterval(function () {
 
-  // Find the distance between now and the count down date
-  var distance = countDownDate - now;
+            // Get today's date and time
+            var now = new Date().getTime();
 
-  // Time calculations for days, hours, minutes and seconds
-  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            // Find the distance between now and the count down date
+            var distance = countDownDate - now;
 
-  // Display the result in the element with id="counter"
-  document.getElementById("counter").innerHTML = days + "d " + hours + "h "
-  + minutes + "m " + seconds + "s ";
+            // Time calculations for days, hours, minutes and seconds
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-  // If the count down is finished, write some text
-  if (distance < 0) {
-    clearInterval(x);
-    document.getElementById("counter").innerHTML = "EXPIRED";
-  }
-}, 1000);
+            // Display the result in the element with id="counter"
+            document.getElementById("counter").innerHTML = days + "d " + hours + "h " +
+                minutes + "m " + seconds + "s ";
 
-</script>
+            // If the count down is finished, write some text
+            if (distance < 0) {
+                clearInterval(x);
+                document.getElementById("counter").innerHTML = "EXPIRED";
+            }
+        }, 1000);
+    </script>
 </body>
+
 </html>
