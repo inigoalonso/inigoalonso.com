@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /ppu085-mpp126.html
+
+Sitemap: https://inigoalonso.com/sitemap.xml
