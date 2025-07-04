@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Growth Analysis</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 2rem;
+      }
+      canvas {
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 3rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Growth Analysis</h1>
+    <p>Weight and Length vs Age per Individual (CSV-loaded)</p>
+    <canvas id="weightChart"></canvas>
+    <canvas id="lengthChart"></canvas>
+
+    <script>
+      const csvFile = "size_tracking.csv"; // Ensure the CSV is hosted in the same GitHub Pages repo
+
+      function createChart(ctx, label, datasets, yLabel, maxAge) {
+        const verticalLines = [];
+        for (let day = 365; day <= maxAge; day += 365) {
+          verticalLines.push({
+            type: "line",
+            xMin: day,
+            xMax: day,
+            borderColor: "gray",
+            borderWidth: 1,
+            borderDash: [4, 4],
+            label: {
+              display: true,
+              content: `${day} days`,
+              position: "start",
+            },
+          });
+        }
+
+        new Chart(ctx, {
+          type: "line",
+          data: {
+            datasets: datasets,
+          },
+          options: {
+            responsive: true,
+            scales: {
+              x: {
+                type: "linear",
+                title: {
+                  display: true,
+                  text: "Age (days)",
+                },
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: yLabel,
+                },
+              },
+            },
+            plugins: {
+              legend: {
+                position: "top",
+              },
+              title: {
+                display: true,
+                text: label,
+              },
+              annotation: {
+                annotations: verticalLines,
+              },
+            },
+          },
+          plugins: [Chart.registry.getPlugin("annotation")],
+        });
+      }
+
+      fetch(csvFile)
+        .then((response) => response.text())
+        .then((csv) => {
+          const results = Papa.parse(csv, {
+            header: true,
+            dynamicTyping: true,
+          });
+          const data = results.data.filter((row) => row["Age (days)"] != null);
+          const byName = {};
+          let maxAge = 0;
+
+          data.forEach((row) => {
+            if (!byName[row.Name]) byName[row.Name] = [];
+            byName[row.Name].push(row);
+            if (row["Age (days)"] > maxAge) maxAge = row["Age (days)"];
+          });
+
+          const weightDatasets = [];
+          const lengthDatasets = [];
+
+          for (const name in byName) {
+            const points = byName[name].sort(
+              (a, b) => a["Age (days)"] - b["Age (days)"]
+            );
+
+            weightDatasets.push({
+              label: name,
+              data: points
+                .filter((p) => p["Weight (g)"] != null)
+                .map((p) => ({ x: p["Age (days)"], y: p["Weight (g)"] })),
+              borderWidth: 2,
+            });
+
+            lengthDatasets.push({
+              label: name,
+              data: points
+                .filter((p) => p["Length (cm)"] != null)
+                .map((p) => ({ x: p["Age (days)"], y: p["Length (cm)"] })),
+              borderWidth: 2,
+            });
+          }
+
+          createChart(
+            document.getElementById("weightChart"),
+            "Weight vs Age by Individual",
+            weightDatasets,
+            "Weight (g)",
+            maxAge
+          );
+          createChart(
+            document.getElementById("lengthChart"),
+            "Length vs Age by Individual",
+            lengthDatasets,
+            "Length (cm)",
+            maxAge
+          );
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.4.0"></script>
+  </body>
+</html>
