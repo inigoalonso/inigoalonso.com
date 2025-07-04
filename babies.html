@@ -2,145 +2,207 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Growth Analysis</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Growth Analysis with Plotly</title>
+    <script src="https://cdn.plot.ly/plotly-2.24.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
     <style>
       body {
         font-family: Arial, sans-serif;
         margin: 2rem;
       }
-      canvas {
-        max-width: 100%;
-        height: auto;
+      .chart {
+        width: 100%;
+        height: 600px;
         margin-bottom: 3rem;
+      }
+      .controls {
+        margin-bottom: 1.5rem;
       }
     </style>
   </head>
   <body>
     <h1>Growth Analysis</h1>
-    <p>Weight and Length vs Age per Individual (CSV-loaded)</p>
-    <canvas id="weightChart"></canvas>
-    <canvas id="lengthChart"></canvas>
+    <div class="controls">
+      <label
+        ><input type="radio" name="genderSelect" value="Male" /> Male
+        Percentiles</label
+      >
+      <label
+        ><input type="radio" name="genderSelect" value="Female" checked />
+        Female Percentiles</label
+      >
+    </div>
+    <div id="weightChart" class="chart"></div>
+    <div id="lengthChart" class="chart"></div>
+    <div id="bmiChart" class="chart"></div>
 
     <script>
-      const csvFile = "size_tracking.csv"; // Ensure the CSV is hosted in the same GitHub Pages repo
+      const csvFile = "data/size_tracking.csv";
+      const percentiles = {
+        Male: {
+          weight: "data/weight_boys.csv",
+          length: "data/length_boys.csv",
+          bmi: "data/bmi_boys.csv",
+          bmiExtra: [
+            "P0.4 (Thinness 2)",
+            "P4 (Thinness 1)",
+            "P79 (Overweight)",
+            "P97.5 (Obese)",
+          ],
+        },
+        Female: {
+          weight: "data/weight_girls.csv",
+          length: "data/length_girls.csv",
+          bmi: "data/bmi_girls.csv",
+          bmiExtra: ["P1.6", "P10", "P89", "P99"],
+        },
+      };
 
-      function createChart(ctx, label, datasets, yLabel, maxAge) {
-        const verticalLines = [];
-        for (let day = 365; day <= maxAge; day += 365) {
-          verticalLines.push({
-            type: "line",
-            xMin: day,
-            xMax: day,
-            borderColor: "gray",
-            borderWidth: 1,
-            borderDash: [4, 4],
-            label: {
-              display: true,
-              content: `${day} days`,
-              position: "start",
-            },
-          });
-        }
+      let currentGender = "Female";
+      let weightTraces = [],
+        lengthTraces = [],
+        bmiTraces = [],
+        maxAge = 0;
 
-        new Chart(ctx, {
-          type: "line",
-          data: {
-            datasets: datasets,
-          },
-          options: {
-            responsive: true,
-            scales: {
-              x: {
-                type: "linear",
-                title: {
-                  display: true,
-                  text: "Age (days)",
-                },
-              },
-              y: {
-                title: {
-                  display: true,
-                  text: yLabel,
-                },
-              },
-            },
-            plugins: {
-              legend: {
-                position: "top",
-              },
-              title: {
-                display: true,
-                text: label,
-              },
-              annotation: {
-                annotations: verticalLines,
-              },
-            },
-          },
-          plugins: [Chart.registry.getPlugin("annotation")],
+      function fetchCSV(url) {
+        return fetch(url)
+          .then((r) => r.text())
+          .then(
+            (t) => Papa.parse(t, { header: true, dynamicTyping: true }).data
+          );
+      }
+
+      function buildPercentileTraces(
+        referenceData,
+        labelPrefix,
+        field,
+        extras = []
+      ) {
+        const base = ["P3", "P10", "P25", "P50", "P75", "P90", "P97"];
+        const all = [...base, ...extras];
+        const isWeight = field === "Weight (g)";
+        return all.map((p) => ({
+          x: referenceData.map((r) => r.Age),
+          y: referenceData.map((r) => (isWeight ? r[p] * 1000 : r[p])),
+          name: `${labelPrefix} ${p}`,
+          mode: "lines",
+          line: { dash: "dot" },
+          hoverinfo: "name+y",
+          type: "scatter",
+        }));
+      }
+
+      async function plotCharts() {
+        const weightPercentiles = buildPercentileTraces(
+          await fetchCSV(percentiles[currentGender].weight),
+          `${currentGender} Weight`,
+          "Weight (g)"
+        );
+        const lengthPercentiles = buildPercentileTraces(
+          await fetchCSV(percentiles[currentGender].length),
+          `${currentGender} Length`,
+          "Length (cm)"
+        );
+        const bmiPercentiles = buildPercentileTraces(
+          await fetchCSV(percentiles[currentGender].bmi),
+          `${currentGender} BMI`,
+          "BMI",
+          percentiles[currentGender].bmiExtra
+        );
+
+        Plotly.newPlot("weightChart", [...weightTraces, ...weightPercentiles], {
+          title: "Weight vs Age by Individual",
+          xaxis: { title: "Age (days)", dtick: 365 },
+          yaxis: { title: "Weight (g)" },
+        });
+
+        Plotly.newPlot("lengthChart", [...lengthTraces, ...lengthPercentiles], {
+          title: "Length vs Age by Individual",
+          xaxis: { title: "Age (days)", dtick: 365 },
+          yaxis: { title: "Length (cm)" },
+        });
+
+        Plotly.newPlot("bmiChart", [...bmiTraces, ...bmiPercentiles], {
+          title: "BMI vs Age by Individual",
+          xaxis: { title: "Age (days)", dtick: 365 },
+          yaxis: { title: "BMI" },
         });
       }
 
-      fetch(csvFile)
-        .then((response) => response.text())
-        .then((csv) => {
-          const results = Papa.parse(csv, {
-            header: true,
-            dynamicTyping: true,
-          });
-          const data = results.data.filter((row) => row["Age (days)"] != null);
-          const byName = {};
-          let maxAge = 0;
+      async function main() {
+        const raw = await fetchCSV(csvFile);
+        const data = raw.filter((r) => r["Age (days)"] != null);
 
-          data.forEach((row) => {
-            if (!byName[row.Name]) byName[row.Name] = [];
-            byName[row.Name].push(row);
-            if (row["Age (days)"] > maxAge) maxAge = row["Age (days)"];
-          });
-
-          const weightDatasets = [];
-          const lengthDatasets = [];
-
-          for (const name in byName) {
-            const points = byName[name].sort(
-              (a, b) => a["Age (days)"] - b["Age (days)"]
-            );
-
-            weightDatasets.push({
-              label: name,
-              data: points
-                .filter((p) => p["Weight (g)"] != null)
-                .map((p) => ({ x: p["Age (days)"], y: p["Weight (g)"] })),
-              borderWidth: 2,
-            });
-
-            lengthDatasets.push({
-              label: name,
-              data: points
-                .filter((p) => p["Length (cm)"] != null)
-                .map((p) => ({ x: p["Age (days)"], y: p["Length (cm)"] })),
-              borderWidth: 2,
-            });
-          }
-
-          createChart(
-            document.getElementById("weightChart"),
-            "Weight vs Age by Individual",
-            weightDatasets,
-            "Weight (g)",
-            maxAge
-          );
-          createChart(
-            document.getElementById("lengthChart"),
-            "Length vs Age by Individual",
-            lengthDatasets,
-            "Length (cm)",
-            maxAge
-          );
+        const byName = {};
+        data.forEach((row) => {
+          const name = row.Name;
+          const gender =
+            name === "Aita" || name === "Pojke"
+              ? "Male"
+              : name === "Mamma" || name === "Flicka"
+              ? "Female"
+              : "Unknown";
+          row.Gender = gender;
+          if (!byName[name]) byName[name] = [];
+          byName[name].push(row);
+          if (row["Age (days)"] > maxAge) maxAge = row["Age (days)"];
         });
+
+        weightTraces = [];
+        lengthTraces = [];
+        bmiTraces = [];
+
+        for (const name in byName) {
+          const group = byName[name].sort(
+            (a, b) => a["Age (days)"] - b["Age (days)"]
+          );
+
+          weightTraces.push({
+            x: group
+              .filter((p) => p["Weight (g)"] != null)
+              .map((p) => p["Age (days)"]),
+            y: group
+              .filter((p) => p["Weight (g)"] != null)
+              .map((p) => p["Weight (g)"]),
+            mode: "lines+markers",
+            name: name,
+            type: "scatter",
+          });
+
+          lengthTraces.push({
+            x: group
+              .filter((p) => p["Length (cm)"] != null)
+              .map((p) => p["Age (days)"]),
+            y: group
+              .filter((p) => p["Length (cm)"] != null)
+              .map((p) => p["Length (cm)"]),
+            mode: "lines+markers",
+            name: name,
+            type: "scatter",
+          });
+
+          bmiTraces.push({
+            x: group
+              .filter((p) => p["BMI"] != null)
+              .map((p) => p["Age (days)"]),
+            y: group.filter((p) => p["BMI"] != null).map((p) => p["BMI"]),
+            mode: "lines+markers",
+            name: name,
+            type: "scatter",
+          });
+        }
+
+        await plotCharts();
+      }
+
+      document.querySelectorAll('input[name="genderSelect"]').forEach((el) => {
+        el.addEventListener("change", async (e) => {
+          currentGender = e.target.value;
+          await plotCharts();
+        });
+      });
+
+      main();
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@1.4.0"></script>
   </body>
 </html>
